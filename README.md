@@ -65,7 +65,7 @@ pip install fastmcp requests
 ### 启动服务器
 
 ```bash
-python mcp_server.py --backend http://backend-api-address:8000 --token your_auth_token
+python mcp_server.py --backend http://backend-api-address:8000/api/v1 --token <your_auth_token>
 ```
 
 your_auth_token 令牌需要在通过`POST /auth/login`登录到后端后获取
@@ -125,9 +125,9 @@ your_auth_token 令牌需要在通过`POST /auth/login`登录到后端后获取
 
 本服务器连接到以下后端 API 接口:
 
-1. 控制设备: `POST /api/v1/devices/{device_id}/control/`
-2. 查询设备概要: `GET /api/v1/devices/overview/`
-3. 查询设备详情: `GET /api/v1/devices/{device_id}/detail/`
+1. 控制设备: `POST /devices/{device_id}/control/`
+2. 查询设备概要: `GET /devices/overview/`
+3. 查询设备详情: `GET /devices/{device_id}/detail/`
 
 ## 注意事项
 
