@@ -1,0 +1,40 @@
+name: Build&Publish
+
+permissions:
+  contents: write
+
+on:
+  push:
+    branches: [ "main", "master", "ci-test" ]
+    tags: [ "v*" ]
+
+env:
+  APP_NAME: mcp_server
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build
+        run: |
+          sudo apt update
+          sudo apt install python3 python3-pip
+          sudo pip install -r requirements.txt
+          sudo pyinstaller mcp_server.py
+      - name: Package Release
+        uses: thedoctor0/zip-release@master
+        with:
+          type: 'zip'
+          filename: ${{env.APP_NAME}}_${{github.ref_name}}_linux.zip
+          directory: dist/mcp_server
+      - name: Release to github
+        uses: softprops/action-gh-release@v1
+        if:  ${{ startsWith(github.ref, 'refs/tags/v') }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{github.ref_name}}
+          files: dist/mcp_server/${{env.APP_NAME}}_${{github.ref_name}}_linux.zip
+      
