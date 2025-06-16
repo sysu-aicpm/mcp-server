@@ -13,39 +13,95 @@ env:
   PYTHON_VERSION: 3.12
 
 jobs:
-  pyinstaller-build:
+  linux:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
       - name: Set up Python ${{ env.PYTHON_VERSION }}
         uses: actions/setup-python@v5
         with:
           python-version: "${{ env.PYTHON_VERSION }}"
-
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install pyinstaller
-
       - name: Build with PyInstaller
         run: |
-          pyinstaller mcp_server.py --onefile --name ${{ env.APP_NAME }}
-
+          pyinstaller mcp_server.py --onefile --name ${{ env.APP_NAME }}_linux
       - name: Upload executable as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.APP_NAME }}
-          path: dist/${{ env.APP_NAME }}
-
+          name: ${{ env.APP_NAME }}_linux
+          path: dist/${{ env.APP_NAME }}_linux
       - name: Create GitHub Release
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref }}
-          name: Release ${{ github.ref_name }}
           body: "Automated release for ${{ env.APP_NAME }}"
           files: |
-            dist/${{ env.APP_NAME }}
+            dist/${{ env.APP_NAME }}_linux
+
+  windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: "${{ env.PYTHON_VERSION }}"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyinstaller
+      - name: Build with PyInstaller
+        run: |
+          pyinstaller mcp_server.py --onefile --name ${{ env.APP_NAME }}_win
+      - name: Upload executable as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.APP_NAME }}_win
+          path: dist/${{ env.APP_NAME }}_win
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref }}
+          body: "Automated release for ${{ env.APP_NAME }}"
+          files: |
+            dist/${{ env.APP_NAME }}_win
+
+  macos:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: "${{ env.PYTHON_VERSION }}"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyinstaller
+      - name: Build with PyInstaller
+        run: |
+          pyinstaller mcp_server.py --onefile --name ${{ env.APP_NAME }}_mac
+      - name: Upload executable as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.APP_NAME }}_mac
+          path: dist/${{ env.APP_NAME }}_mac
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref }}
+          body: "Automated release for ${{ env.APP_NAME }}"
+          files: |
+            dist/${{ env.APP_NAME }}_mac
