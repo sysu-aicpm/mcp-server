@@ -19,6 +19,7 @@ jobs:
         uses: sayyid5416/pyinstaller@v1
         with:
           python_ver: '3.12'
+          spec: 'mcp_server.spec'
           requirements: 'requirements.txt'
           upload_exe_with_name: ${{ env.APP_NAME }}
           options: --onefile, --name ${{ env.APP_NAME }}, --windowed
