@@ -90,7 +90,9 @@ your_auth_token 令牌需要在通过`POST /auth/login`登录到后端后获取
       "args": [
         "/path/to/mcp_server.py",
         "--token",
-        "your_auth_token"
+        "your_auth_token",
+        "--backend",
+        "http://backend-api-address:8000/api/v1"
       ]
     }
   }
