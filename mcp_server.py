@@ -205,7 +205,7 @@ def get_device_overview() -> Dict[str, Any]:
     headers = {"Authorization": f"Bearer {auth_token}"}
     
     try:
-        response = requests.get(f"{backend_url}/api/v1/devices/overview/", headers=headers)
+        response = requests.get(f"{backend_url}/devices/overview/", headers=headers)
         response.raise_for_status()
         return response.json()
     except requests.RequestException as e:
@@ -232,7 +232,7 @@ def get_device_detail(
     headers = {"Authorization": f"Bearer {auth_token}"}
     
     try:
-        response = requests.get(f"{backend_url}/api/v1/devices/{device_id}/detail/", headers=headers)
+        response = requests.get(f"{backend_url}/devices/{device_id}/detail/", headers=headers)
         response.raise_for_status()
         return response.json()
     except requests.RequestException as e:
@@ -309,7 +309,7 @@ def control_device(
     
     try:
         response = requests.post(
-            f"{backend_url}/api/v1/devices/{device_id}/control/", 
+            f"{backend_url}/devices/{device_id}/control/", 
             headers=headers,
             json=payload
         )

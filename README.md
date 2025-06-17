@@ -54,18 +54,22 @@
 - offline: 设备离线
 - error: 设备出现错误
 
-## 安装依赖
-
-```bash
-pip install fastmcp requests
-```
-
 ## 使用方法
 
 ### 启动服务器
 
+可以通过 python 环境运行脚本：
+
 ```bash
+pip install fastmcp requests
+
 python mcp_server.py --backend http://backend-api-address:8000/api/v1 --token <your_auth_token>
+```
+
+也可以从 Release 中下载对应平台的二进制可执行文件，直接运行：
+
+```bash
+mcp_server --backend http://backend-api-address:8000/api/v1 --token <your_auth_token>
 ```
 
 your_auth_token 令牌需要在通过`POST /auth/login`登录到后端后获取
